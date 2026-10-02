@@ -1,4 +1,5 @@
 import os
+import time
 import re
 
 class EncodingError(AttributeError):
@@ -18,7 +19,7 @@ class fastans:
 
     # Main functions
 
-    def train(self, text, num_mergers=10):
+    def train(self, text, num_mergers=10, printf=False, delay=1):
         # import counter
         from collections import Counter
 
@@ -51,7 +52,12 @@ class fastans:
             bpe_vocab[prep_word] = count # <- write ^ to the bpe vocab: "byteword": her count
 
         # write new data to the i2t, t2i and mergers
+        if printf:
+            start = time.perf_counter()
         for i in range(num_mergers): # <- cycle streeply for num mergers, which were be give
+            if printf and i % delay == 0:
+                print(f"\nFastrans Logs:\nMerge {i} in {time.perf_counter() - start} seconds\n")
+                start = time.perf_counter()
 
             # get pairs: (byte, byte): their's count
             pairs = self.get_stats(bpe_vocab)
