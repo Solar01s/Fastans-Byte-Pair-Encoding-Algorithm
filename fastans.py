@@ -17,6 +17,9 @@ class fastans:
     def __str__(self):
         return (f"\nText Embedding layer:\nNumber of tokens: {len(self.t2i)}\n")
 
+    def __len__(self):
+        return len(self.i2t)
+
     # Main functions
 
     def train(self, text, num_mergers=10, printf=False, delay=1):
